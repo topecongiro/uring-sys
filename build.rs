@@ -22,6 +22,7 @@ fn main() {
         .file(src.join("queue.c"))
         .file(src.join("syscall.c"))
         .file(src.join("register.c"))
+        .define("_DEFAULT_SOURCE", "")
         .include(src.join("include"))
         .include(&configured_include)
         .extra_warnings(false)
