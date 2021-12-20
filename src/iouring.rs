@@ -3,7 +3,7 @@
 /// IO submission data structure (Submission Queue Entry)
 #[repr(C)]
 pub struct io_uring_sqe {
-    pub opcode: libc::__u8,  /* type of operation for this sqe */
+    pub opcode: IoRingOp,  /* type of operation for this sqe */
     pub flags: libc::__u8,   /* IOSQE_ flags */
     pub ioprio: libc::__u16, /* ioprio for the request */
     pub fd: libc::__s32,     /* file descriptor to do IO on */
@@ -81,12 +81,12 @@ pub const IORING_SETUP_CLAMP: libc::c_uint = 1 << 4; /* clamp SQ/CQ ring sizes *
 pub const IORING_SETUP_ATTACH_WQ: libc::c_uint = 1 << 5; /* attach to existing wq */
 pub const IORING_SETUP_R_DISABLED: libc::c_uint = 1 << 6; /* start with ring disabled */
 
-#[repr(C)]
+#[repr(u8)]
 #[non_exhaustive]
 #[allow(nonstandard_style)]
 #[derive(Clone, Copy, Debug)]
 pub enum IoRingOp {
-    IORING_OP_NOP,
+    IORING_OP_NOP = 0,
     IORING_OP_READV,
     IORING_OP_WRITEV,
     IORING_OP_FSYNC,
