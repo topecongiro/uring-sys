@@ -457,7 +457,11 @@ extern "C" {
     pub fn io_uring_prep_close(sqe: *mut io_uring_sqe, fd: libc::c_int);
 
     #[link_name = "rust_io_uring_prep_close_direct"]
-    pub fn io_uring_prep_close_direct(sqe: *mut io_uring_sqe, fd: libc::c_int, file_index: libc::c_uint);
+    pub fn io_uring_prep_close_direct(
+        sqe: *mut io_uring_sqe,
+        fd: libc::c_int,
+        file_index: libc::c_uint,
+    );
 
     #[link_name = "rust_io_uring_prep_read"]
     pub fn io_uring_prep_read(
@@ -567,21 +571,31 @@ extern "C" {
     pub fn io_uring_prep_shutdown(sqe: *mut io_uring_sqe, fd: libc::c_int, how: libc::c_int);
 
     #[link_name = "rust_io_uring_prep_unlinkat"]
-    pub fn io_uring_prep_unlinkat(sqe: *mut io_uring_sqe, dfd: libc::c_int,
-                                  path: *const libc::c_char, flags: libc::c_int);
+    pub fn io_uring_prep_unlinkat(
+        sqe: *mut io_uring_sqe,
+        dfd: libc::c_int,
+        path: *const libc::c_char,
+        flags: libc::c_int,
+    );
 
     #[link_name = "rust_io_uring_prep_renameat"]
     pub fn io_uring_prep_renameat(
-        sqe: *mut io_uring_sqe, olddfd: libc::c_int,
-    oldpath: *const libc::c_char, newdfd: libc::c_int,
-    newpath: *const libc::c_char, flags: libc::c_int);
+        sqe: *mut io_uring_sqe,
+        olddfd: libc::c_int,
+        oldpath: *const libc::c_char,
+        newdfd: libc::c_int,
+        newpath: *const libc::c_char,
+        flags: libc::c_int,
+    );
 
     #[link_name = "rust_io_uring_prep_sync_file_range"]
     pub fn io_uring_prep_sync_file_range(
-        sqe: *mut io_uring_sqe, fd: libc::c_int,
+        sqe: *mut io_uring_sqe,
+        fd: libc::c_int,
         len: libc::c_uint,
         offset: libc::__u64,
-        flags: libc::c_int);
+        flags: libc::c_int,
+    );
 
     #[link_name = "rust_io_uring_prep_mkdirat"]
     pub fn io_uring_prep_mkdirat(
@@ -589,20 +603,26 @@ extern "C" {
         fd: libc::c_int,
         len: libc::c_uint,
         offset: libc::__u64,
-        flags: libc::c_int);
+        flags: libc::c_int,
+    );
 
     #[link_name = "rust_io_uring_prep_symlinkat"]
-    pub fn io_uring_prep_symlinkat (
+    pub fn io_uring_prep_symlinkat(
         sqe: *mut io_uring_sqe,
-        target: *const libc::c_char, newdirfd: libc::c_int,
+        target: *const libc::c_char,
+        newdirfd: libc::c_int,
         linkpath: *const libc::c_char,
     );
 
     #[link_name = "rust_io_uring_prep_linkat"]
     pub fn io_uring_prep_linkat(
-        sqe: *mut io_uring_sqe, olddfd: libc::c_int,
-        oldpath: *const libc::c_char, newdfd: libc::c_int,
-        newpath: *const libc::c_char, flags: libc::c_int);
+        sqe: *mut io_uring_sqe,
+        olddfd: libc::c_int,
+        oldpath: *const libc::c_char,
+        newdfd: libc::c_int,
+        newpath: *const libc::c_char,
+        flags: libc::c_int,
+    );
 
     #[link_name = "rust_io_uring_sq_ready"]
     pub fn io_uring_sq_ready(ring: *mut io_uring) -> libc::c_uint;

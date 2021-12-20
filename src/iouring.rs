@@ -3,7 +3,7 @@
 /// IO submission data structure (Submission Queue Entry)
 #[repr(C)]
 pub struct io_uring_sqe {
-    pub opcode: IoRingOp,  /* type of operation for this sqe */
+    pub opcode: IoRingOp,    /* type of operation for this sqe */
     pub flags: libc::__u8,   /* IOSQE_ flags */
     pub ioprio: libc::__u16, /* ioprio for the request */
     pub fd: libc::__s32,     /* file descriptor to do IO on */
