@@ -252,6 +252,7 @@ pub const IORING_FEAT_EXT_ARG: libc::__u32 = 1 << 8;
 pub const IORING_FEAT_NATIVE_WORKERS: libc::__u32 = 1 << 9;
 pub const IORING_FEAT_RSRC_TAGS: libc::__u32 = 1 << 10;
 pub const IORING_FEAT_CQE_SKIP: libc::__u32 = 1 << 11;
+pub const IORING_FEAT_LINKED_FILE: libc::__u32 = 1 << 12;
 
 #[repr(C)]
 #[non_exhaustive]
