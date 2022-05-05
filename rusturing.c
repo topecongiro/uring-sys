@@ -565,3 +565,9 @@ rust_io_uring_wait_cqe(struct io_uring* ring, struct io_uring_cqe** cqe_ptr)
 {
   return io_uring_wait_cqe(ring, cqe_ptr);
 }
+
+extern inline struct io_uring_sqe*
+rust_io_uring_get_sqe(struct io_uring* ring)
+{
+  return io_uring_get_sqe(ring);
+}

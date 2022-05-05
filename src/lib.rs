@@ -117,8 +117,6 @@ extern "C" {
         sigmask: *mut libc::sigset_t,
     ) -> libc::c_int;
 
-    pub fn io_uring_get_sqe(ring: *mut io_uring) -> *mut io_uring_sqe;
-
     pub fn io_uring_register_buffers(
         ring: *mut io_uring,
         iovecs: *const libc::iovec,
@@ -654,4 +652,7 @@ extern "C" {
 
     #[link_name = "rust_io_uring_wait_cqe"]
     pub fn io_uring_wait_cqe(ring: *mut io_uring, cqe_ptr: *mut *mut io_uring_cqe) -> libc::c_int;
+
+    #[link_name = "rust_io_uring_get_sqe"]
+    pub fn io_uring_get_sqe(ring: *mut io_uring) -> *mut io_uring_sqe;
 }
