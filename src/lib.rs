@@ -193,6 +193,12 @@ extern "C" {
     pub fn io_uring_unregister_iowq_aff(ring: *mut io_uring);
     pub fn io_uring_register_iowq_max_workers(ring: *mut io_uring, values: *mut libc::c_uint);
 
+    pub fn io_uring_register_ring_fd(ring: *mut io_uring) -> libc::c_int;
+    pub fn io_uring_unregister_ring_fd(ring: *mut io_uring) -> libc::c_int;
+
+    pub fn io_uring_register_buf_ring(ring: *mut io_uring, reg: *mut io_uring_buf_reg) -> libc::c_int;
+    pub fn io_uring_unregister_buf_ring(ring: *mut io_uring, bgid: libc::c_int) -> libc::c_int;
+
     pub fn io_uring_mlock_size(entries: libc::c_uint, flags: libc::c_uint);
     pub fn io_uring_mlock_size_params(entries: libc::c_uint, p: *mut io_uring_params);
 }

@@ -73,13 +73,38 @@ pub const IOSQE_BUFFER_SELECT: libc::__u8 = 1 << 5; /* select buf from sqe->buf_
 pub const IOSQE_CQE_SKIP_SUCCESS: libc::__u8 = 1 << 6; /* don't post CQE if request succeeded */
 
 // io_uring_setup flags
-pub const IORING_SETUP_IOPOLL: libc::c_uint = 1 << 0; /* io_context is polled */
-pub const IORING_SETUP_SQPOLL: libc::c_uint = 1 << 1; /* SQ poll thread */
-pub const IORING_SETUP_SQ_AFF: libc::c_uint = 1 << 2; /* sq_thread_cpu is valid */
-pub const IORING_SETUP_CQSIZE: libc::c_uint = 1 << 3; /* app defines CQ size */
-pub const IORING_SETUP_CLAMP: libc::c_uint = 1 << 4; /* clamp SQ/CQ ring sizes */
-pub const IORING_SETUP_ATTACH_WQ: libc::c_uint = 1 << 5; /* attach to existing wq */
-pub const IORING_SETUP_R_DISABLED: libc::c_uint = 1 << 6; /* start with ring disabled */
+/// `io_context` is polled.
+pub const IORING_SETUP_IOPOLL: libc::c_uint = 1 << 0;
+/// SQ poll thread.
+pub const IORING_SETUP_SQPOLL: libc::c_uint = 1 << 1;
+/// `sq_thread_cpu` is valid.
+pub const IORING_SETUP_SQ_AFF: libc::c_uint = 1 << 2;
+/// App defines CQ size.
+pub const IORING_SETUP_CQSIZE: libc::c_uint = 1 << 3;
+/// Clamp SQ/CQ ring sizes.
+pub const IORING_SETUP_CLAMP: libc::c_uint = 1 << 4;
+/// Attach to existing wq.
+pub const IORING_SETUP_ATTACH_WQ: libc::c_uint = 1 << 5;
+/// Start with ring disabled.
+pub const IORING_SETUP_R_DISABLED: libc::c_uint = 1 << 6;
+/// Continue submit on error.
+pub const IORING_SETUP_SUBMIT_ALL: libc::c_uint = 1 << 7;
+/// Cooperative task running.
+///
+/// When requests complete, they often require forcing the submitter to transition to
+/// the kernel to complete.
+/// If this flag is set, work will be done when the task transitions anyway, rather
+/// than force an inter-processor interrupt reschedule. This avoids interrupting
+/// a task running in userspace, and saves an IPI.
+pub const IORING_SETUP_COOP_TASKRUN: libc::c_uint = 1 << 8;
+/// If COOP_TASKRUN is set, get notified if task work is available for
+/// running and a kernel transition would be needed to run it. This sets
+/// IORING_SQ_TASKRUN in the sq ring flags. Not valid with COOP_TASKRUN.
+pub const IORING_SETUP_TASKRUN_FLAG: libc::c_uint = 1 << 9;
+/// SQEs are 128b.
+pub const IORING_SETUP_SQE128: libc::c_uint = 1 << 10;
+/// CQEs are 32b.
+pub const IORING_SETUP_CQE32: libc::c_uint = 1 << 11;
 
 #[repr(u8)]
 #[non_exhaustive]
@@ -126,6 +151,13 @@ pub enum IoRingOp {
     IORING_OP_MKDIRAT,
     IORING_OP_SYMLINKAT,
     IORING_OP_LINKAT,
+    IORING_OP_MSG_RING,
+    IORING_OP_FSETXATTR,
+    IORING_OP_SETXATTR,
+    IORING_OP_FGETXATTR,
+    IORING_OP_GETXATTR,
+    IORING_OP_SOCKET,
+    IORING_OP_URING_CMD,
 
     /* this goes last, obviously */
     IORING_OP_LAST,
@@ -164,6 +196,12 @@ pub const IORING_POLL_ADD_MULTI: libc::__u32 = 1 << 0;
 pub const IORING_POLL_UPDATE_EVENTS: libc::__u32 = 1 << 1;
 pub const IORING_POLL_UPDATE_USER_DATA: libc::__u32 = 1 << 2;
 
+/// If set, instead of first attempting to send or receive and arm poll if that yields an
+/// -EAGAIN result, arm poll upfront and skip the initial transfer attempt.
+///
+/// `send`/`sendmsg` and `recv`/`recvmsg` flags (`sqe.addr2`).
+pub const IORING_RECVSEND_POLL_FIRST: libc::__u32 = 1 << 0;
+
 /// IO completion data structure (Completion Queue Entry)
 #[repr(C)]
 pub struct io_uring_cqe {
@@ -177,6 +215,8 @@ pub struct io_uring_cqe {
 pub const IORING_CQE_F_BUFFER: libc::__u32 = 1 << 0;
 /// If set, parent SQE will generate more CQE entries
 pub const IORING_CQE_F_MORE: libc::__u32 = 1 << 1;
+/// If set, more data to read after socket recv.
+pub const IORING_CQE_F_SOCK_NONEMPTY: libc::__u32 = 1 << 2;
 
 pub const IORING_CQE_BUFFER_SHIFT: libc::c_int = 16;
 
@@ -200,8 +240,12 @@ pub struct io_sqring_offsets {
 }
 
 // sq_ring.kflags
+/// Needs `io_uring_enter` wakeup
 pub const IORING_SQ_NEED_WAKEUP: libc::c_uint = 1 << 0;
+/// CQ ring is overflown
 pub const IORING_SQ_CQ_OVERFLOW: libc::c_uint = 1 << 1;
+/// Task should enter the kernel
+pub const IORING_SQ_CQ_TASKRUN: libc::c_uint = 1 << 2;
 
 #[repr(C)]
 pub struct io_cqring_offsets {
@@ -286,6 +330,13 @@ pub enum IoUringRegisterOp {
     /* set/get max number of io-wq workers */
     IORING_REGISTER_IOWQ_MAX_WORKERS = 19,
 
+    IORING_REGISTER_RING_FDS		= 20,
+    IORING_UNREGISTER_RING_FDS		= 21,
+
+    /* register ring based provide buffer group */
+    IORING_REGISTER_PBUF_RING		= 22,
+    IORING_UNREGISTER_PBUF_RING		= 23,
+
     /* this goes last */
     IORING_REGISTER_LAST,
 }
@@ -350,6 +401,40 @@ pub struct io_uring_restriction {
     op_flags: io_uring_restriction_op_flags,
     resv: libc::__u8,
     resv2: [libc::__u32; 3],
+}
+
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct io_uring_buf {
+    addr: libc::__u64,
+    len: libc::__u32,
+    bid: libc::__u16,
+    resv: libc::__u16,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub union io_uring_buf_ring {
+    tail: io_uring_buf_ring_tail,
+    bufs: [io_uring_buf; 0],
+}
+
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct io_uring_buf_ring_tail {
+    resv1: libc::__u64,
+    resv2: libc::__u32,
+    resv3: libc::__u16,
+    tail: libc::__u16,
+}
+
+#[repr(C)]
+pub struct io_uring_buf_reg {
+    ring_addr: libc::__u64,
+    ring_entries: libc::__u32,
+    bgid: libc::__u16,
+    pad: libc::__u16,
+    resv: [libc::__u64; 3],
 }
 
 #[repr(C)]
