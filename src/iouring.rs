@@ -378,7 +378,10 @@ pub struct io_uring_rsrc_update2 {
 /// Skip updating fd indexes set to this value in the fd table
 pub const IORING_REGISTER_FILES_SKIP: libc::c_int = -2;
 
+pub const IO_URING_OP_SUPPORTED: libc::c_ushort = 1 << 0;
+
 #[repr(C)]
+#[derive(Copy, Clone)]
 pub struct io_uring_probe_op {
     pub op: libc::__u8,
     pub resv: libc::__u8,
