@@ -1,12 +1,10 @@
-use std::ffi::CString;
-use std::mem::MaybeUninit;
 use std::os::unix::ffi::OsStrExt;
 use std::path::Path;
 use std::ptr;
 
-use libc::AT_FDCWD;
 use uring_sys2::*;
 
+use crate::common::io_uring_init;
 use common::strerror;
 
 mod common;
@@ -14,9 +12,7 @@ mod common;
 #[test]
 fn unlink() {
     unsafe {
-        let mut ring = MaybeUninit::uninit();
-        assert_eq!(io_uring_queue_init(1, ring.as_mut_ptr(), 0), 0);
-        let mut ring = ring.assume_init();
+        let mut ring = io_uring_init(1).unwrap();
 
         let f = tempfile::NamedTempFile::new().unwrap();
         assert!(f.path().exists());
