@@ -199,6 +199,7 @@ extern "C" {
     pub fn io_uring_register_buf_ring(
         ring: *mut io_uring,
         reg: *mut io_uring_buf_reg,
+        flag: libc::c_uint,
     ) -> libc::c_int;
     pub fn io_uring_unregister_buf_ring(ring: *mut io_uring, bgid: libc::c_int) -> libc::c_int;
 

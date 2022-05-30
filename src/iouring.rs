@@ -351,28 +351,28 @@ pub const IO_WQ_UNBOUND: usize = 1;
 
 #[repr(C, align(8))]
 pub struct io_uring_rsrc_register {
-    nr: libc::__u32,
-    resv: libc::__u32,
-    resv2: libc::__u64,
-    data: libc::__u64,
-    tags: libc::__u64,
+    pub nr: libc::__u32,
+    pub resv: libc::__u32,
+    pub resv2: libc::__u64,
+    pub data: libc::__u64,
+    pub tags: libc::__u64,
 }
 
 #[repr(C, align(8))]
 pub struct io_uring_rsrc_update {
-    offset: libc::__u32,
-    resv: libc::__u32,
-    data: libc::__u64,
+    pub offset: libc::__u32,
+    pub resv: libc::__u32,
+    pub data: libc::__u64,
 }
 
 #[repr(C, align(8))]
 pub struct io_uring_rsrc_update2 {
-    offset: libc::__u32,
-    resv: libc::__u32,
-    data: libc::__u64,
-    tags: libc::__u64,
-    nr: libc::__u32,
-    resv2: libc::__u32,
+    pub offset: libc::__u32,
+    pub resv: libc::__u32,
+    pub data: libc::__u64,
+    pub tags: libc::__u64,
+    pub nr: libc::__u32,
+    pub resv2: libc::__u32,
 }
 
 /// Skip updating fd indexes set to this value in the fd table
@@ -380,68 +380,68 @@ pub const IORING_REGISTER_FILES_SKIP: libc::c_int = -2;
 
 #[repr(C)]
 pub struct io_uring_probe_op {
-    op: libc::__u8,
-    resv: libc::__u8,
-    flags: libc::__u16,
-    resv2: libc::__u32,
+    pub op: libc::__u8,
+    pub resv: libc::__u8,
+    pub flags: libc::__u16,
+    pub resv2: libc::__u32,
 }
 
 #[repr(C)]
 pub struct io_uring_probe {
-    last_op: libc::__u8,
-    ops_len: libc::__u8,
-    resv: libc::__u16,
-    resv2: [libc::__u32; 3],
-    ops: [io_uring_probe_op; 0],
+    pub last_op: libc::__u8,
+    pub ops_len: libc::__u8,
+    pub resv: libc::__u16,
+    pub resv2: [libc::__u32; 3],
+    pub ops: [io_uring_probe_op; 0],
 }
 
 #[repr(C)]
 pub struct io_uring_restriction {
-    opcode: libc::__u16,
-    op_flags: io_uring_restriction_op_flags,
-    resv: libc::__u8,
-    resv2: [libc::__u32; 3],
+    pub opcode: libc::__u16,
+    pub op_flags: io_uring_restriction_op_flags,
+    pub resv: libc::__u8,
+    pub resv2: [libc::__u32; 3],
 }
 
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct io_uring_buf {
-    addr: libc::__u64,
-    len: libc::__u32,
-    bid: libc::__u16,
-    resv: libc::__u16,
+    pub addr: libc::__u64,
+    pub len: libc::__u32,
+    pub bid: libc::__u16,
+    pub resv: libc::__u16,
 }
 
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub union io_uring_buf_ring {
-    tail: io_uring_buf_ring_tail,
-    bufs: [io_uring_buf; 0],
+    pub tail: io_uring_buf_ring_tail,
+    pub bufs: [io_uring_buf; 0],
 }
 
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct io_uring_buf_ring_tail {
-    resv1: libc::__u64,
-    resv2: libc::__u32,
-    resv3: libc::__u16,
-    tail: libc::__u16,
+    pub resv1: libc::__u64,
+    pub resv2: libc::__u32,
+    pub resv3: libc::__u16,
+    pub tail: libc::__u16,
 }
 
 #[repr(C)]
 pub struct io_uring_buf_reg {
-    ring_addr: libc::__u64,
-    ring_entries: libc::__u32,
-    bgid: libc::__u16,
-    pad: libc::__u16,
-    resv: [libc::__u64; 3],
+    pub ring_addr: libc::__u64,
+    pub ring_entries: libc::__u32,
+    pub bgid: libc::__u16,
+    pub pad: libc::__u16,
+    pub resv: [libc::__u64; 3],
 }
 
 #[repr(C)]
 pub union io_uring_restriction_op_flags {
-    register_op: libc::__u8, /* IORING_RESTRICTION_REGISTER_OP */
-    sqe_op: libc::__u8,      /* IORING_RESTRICTION_SQE_OP */
-    sqe_flags: libc::__u8,   /* IORING_RESTRICTION_SQE_FLAGS_* */
+    pub register_op: libc::__u8, /* IORING_RESTRICTION_REGISTER_OP */
+    pub sqe_op: libc::__u8,      /* IORING_RESTRICTION_SQE_OP */
+    pub sqe_flags: libc::__u8,   /* IORING_RESTRICTION_SQE_FLAGS_* */
 }
 
 /// io_uring_restriction->opcode values
@@ -462,8 +462,8 @@ pub enum IoUringRestrictionOpcode {
 
 #[repr(C)]
 pub struct io_uring_getevents_arg {
-    sigmask: libc::__u64,
-    sigmask_sz: libc::__u32,
-    pad: libc::__u32,
-    ts: libc::__u64,
+    pub sigmask: libc::__u64,
+    pub sigmask_sz: libc::__u32,
+    pub pad: libc::__u32,
+    pub ts: libc::__u64,
 }
