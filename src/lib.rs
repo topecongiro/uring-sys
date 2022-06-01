@@ -633,10 +633,10 @@ extern "C" {
     );
 
     #[link_name = "rust_io_uring_sq_ready"]
-    pub fn io_uring_sq_ready(ring: *mut io_uring) -> libc::c_uint;
+    pub fn io_uring_sq_ready(ring: *const io_uring) -> libc::c_uint;
 
     #[link_name = "rust_io_uring_sq_space_left"]
-    pub fn io_uring_sq_space_left(ring: *mut io_uring) -> libc::c_uint;
+    pub fn io_uring_sq_space_left(ring: *const io_uring) -> libc::c_uint;
 
     #[link_name = "rust_io_uring_sqring_wait"]
     pub fn io_uring_sqring_wait(ring: *mut io_uring) -> libc::c_int;
