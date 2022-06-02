@@ -477,7 +477,7 @@ extern "C" {
         fd: libc::c_int,
         buf: *mut libc::c_void,
         nbytes: libc::c_uint,
-        offset: libc::off_t,
+        offset: libc::__u64,
     );
 
     #[link_name = "rust_io_uring_prep_write"]
@@ -486,7 +486,7 @@ extern "C" {
         fd: libc::c_int,
         buf: *const libc::c_void,
         nbytes: libc::c_uint,
-        offset: libc::off_t,
+        offset: libc::__u64,
     );
 
     #[link_name = "rust_io_uring_prep_statx"]
