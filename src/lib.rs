@@ -269,7 +269,7 @@ extern "C" {
         fd: libc::c_int,
         iovecs: *const libc::iovec,
         nr_vecs: libc::c_uint,
-        offset: libc::off_t,
+        offset: libc::__u64,
     );
 
     #[link_name = "rust_io_uring_prep_readv2"]
