@@ -210,7 +210,7 @@ extern "C" {
 #[link(name = "rusturing")]
 extern "C" {
     #[link_name = "rust_io_uring_opcode_supported"]
-    pub fn io_uring_opcode_supported(p: *mut io_uring_probe, op: libc::c_int) -> libc::c_int;
+    pub fn io_uring_opcode_supported(p: *const io_uring_probe, op: libc::c_int) -> libc::c_int;
 
     #[link_name = "rust_io_uring_cq_advance"]
     pub fn io_uring_cq_advance(ring: *mut io_uring, nr: libc::c_uint);
@@ -288,7 +288,7 @@ extern "C" {
         fd: libc::c_int,
         buf: *mut libc::c_void,
         nbytes: libc::c_uint,
-        offset: libc::off_t,
+        offset: libc::__u64,
         buf_index: libc::c_int,
     );
 
@@ -298,7 +298,7 @@ extern "C" {
         fd: libc::c_int,
         iovecs: *const libc::iovec,
         nr_vecs: libc::c_uint,
-        offset: libc::off_t,
+        offset: libc::__u64,
     );
 
     #[link_name = "rust_io_uring_prep_writev2"]
@@ -317,7 +317,7 @@ extern "C" {
         fd: libc::c_int,
         buf: *const libc::c_void,
         nbytes: libc::c_uint,
-        offset: libc::off_t,
+        offset: libc::__u64,
         buf_index: libc::c_int,
     );
 
