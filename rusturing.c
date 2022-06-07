@@ -255,6 +255,26 @@ rust_io_uring_prep_accept_direct(struct io_uring_sqe* sqe,
 }
 
 extern inline void
+rust_io_uring_prep_multishot_accept(struct io_uring_sqe* sqe,
+                          int fd,
+                          struct sockaddr* addr,
+                          socklen_t* addrlen,
+                          int flags)
+{
+    io_uring_prep_multishot_accept(sqe, fd, addr, addrlen, flags);
+}
+
+extern inline void
+rust_io_uring_prep_multishot_accept_direct(struct io_uring_sqe* sqe,
+                                 int fd,
+                                 struct sockaddr* addr,
+                                 socklen_t* addrlen,
+                                 int flags)
+{
+    io_uring_prep_multishot_accept_direct(sqe, fd, addr, addrlen, flags);
+}
+
+extern inline void
 rust_io_uring_prep_cancel(struct io_uring_sqe* sqe, __u64 user_data, int flags)
 {
   io_uring_prep_cancel(sqe, user_data, flags);

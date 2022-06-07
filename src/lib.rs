@@ -407,6 +407,24 @@ extern "C" {
         file_index: libc::c_uint,
     );
 
+    #[link_name = "rust_io_uring_prep_multishot_accept"]
+    pub fn io_uring_prep_multishot_accept(
+        sqe: *mut io_uring_sqe,
+        fd: libc::c_int,
+        addr: *mut libc::sockaddr,
+        addrlen: *mut libc::socklen_t,
+        flags: libc::c_int,
+    );
+
+    #[link_name = "rust_io_uring_prep_multishot_accept_direct"]
+    pub fn io_uring_prep_multishot_accept_direct(
+        sqe: *mut io_uring_sqe,
+        fd: libc::c_int,
+        addr: *mut libc::sockaddr,
+        addrlen: *mut libc::socklen_t,
+        flags: libc::c_int,
+    );
+
     #[link_name = "rust_io_uring_prep_cancel"]
     pub fn io_uring_prep_cancel(sqe: *mut io_uring_sqe, user_data: libc::__u64, flags: libc::c_int);
 
