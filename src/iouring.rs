@@ -64,13 +64,13 @@ pub union cmd_flags {
 type __kernel_rwf_t = libc::c_int;
 
 // sqe.flags
-pub const IOSQE_FIXED_FILE: libc::__u8 = 1 << 0; /* use fixed fileset */
-pub const IOSQE_IO_DRAIN: libc::__u8 = 1 << 1; /* issue after inflight IO */
-pub const IOSQE_IO_LINK: libc::__u8 = 1 << 2; /* links next sqe */
-pub const IOSQE_IO_HARDLINK: libc::__u8 = 1 << 3; /* like LINK, but stronger */
-pub const IOSQE_ASYNC: libc::__u8 = 1 << 4; /* always go async */
-pub const IOSQE_BUFFER_SELECT: libc::__u8 = 1 << 5; /* select buf from sqe->buf_group */
-pub const IOSQE_CQE_SKIP_SUCCESS: libc::__u8 = 1 << 6; /* don't post CQE if request succeeded */
+pub const IOSQE_FIXED_FILE: libc::c_uint = 1 << 0; /* use fixed fileset */
+pub const IOSQE_IO_DRAIN: libc::c_uint = 1 << 1; /* issue after inflight IO */
+pub const IOSQE_IO_LINK: libc::c_uint = 1 << 2; /* links next sqe */
+pub const IOSQE_IO_HARDLINK: libc::c_uint = 1 << 3; /* like LINK, but stronger */
+pub const IOSQE_ASYNC: libc::c_uint = 1 << 4; /* always go async */
+pub const IOSQE_BUFFER_SELECT: libc::c_uint = 1 << 5; /* select buf from sqe->buf_group */
+pub const IOSQE_CQE_SKIP_SUCCESS: libc::c_uint = 1 << 6; /* don't post CQE if request succeeded */
 
 // io_uring_setup flags
 /// `io_context` is polled.
