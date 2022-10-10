@@ -25,7 +25,6 @@ fn main() {
         .file(src.join("register.c"))
         .file(src.join("version.c"))
         .define("_DEFAULT_SOURCE", "")
-        .include(src.join("include"))
         .include(&configured_include)
         .extra_warnings(false)
         .compile("uring");
@@ -45,19 +44,24 @@ fn main() {
     // (our additional, linkable C bindings)
     Build::new()
         .file(out_dir.join("rusturing.c"))
-        .include(src.join("include"))
         .include(&configured_include)
         .compile("rusturing");
 
     let out_path = out_dir.join("bindings.rs");
     bindings.write_to_file(out_path).unwrap();
+
+    println!("cargo:include={}", configured_include.display());
 }
 
 fn configure(liburing: &Path) -> PathBuf {
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap())
         .canonicalize()
         .unwrap();
+    fs::create_dir_all(out_dir.join("src/include/liburing")).unwrap();
     fs::copy(liburing.join("configure"), out_dir.join("configure")).unwrap();
+    fs::copy(liburing.join("src/include/liburing.h"), out_dir.join("src/include/liburing.h")).unwrap();
+    fs::copy(liburing.join("src/include/liburing/barrier.h"), out_dir.join("src/include/liburing/barrier.h")).unwrap();
+    fs::copy(liburing.join("src/include/liburing/io_uring.h"), out_dir.join("src/include/liburing/io_uring.h")).unwrap();
     fs::copy(
         liburing.join("Makefile.common"),
         out_dir.join("Makefile.common"),
@@ -68,11 +72,10 @@ fn configure(liburing: &Path) -> PathBuf {
         out_dir.join("liburing.spec"),
     )
     .unwrap();
-    fs::create_dir_all(out_dir.join("src/include/liburing")).unwrap();
     let ret = Command::new("./configure")
         .current_dir(&out_dir)
         .output()
-        .expect("configure script failed");
+        .unwrap();
     if !ret.status.success() {
         panic!(
             "configure failed: {}",
