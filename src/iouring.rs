@@ -250,9 +250,9 @@ pub const IORING_POLL_ADD_LEVEL: libc::__u32 = 1 << 3;
  * IORING_ASYNC_CANCEL_FD_FIXED	'fd' passed in is a fixed descriptor
  */
 pub const IORING_ASYNC_CANCEL_ALL: libc::__u32 = 1 << 0;
-pub const IORING_ASYNC_CANCEL_FD: libc::__u32= 1 << 1;
-pub const IORING_ASYNC_CANCEL_ANY: libc::__u32= 1 << 2;
-pub const IORING_ASYNC_CANCEL_FD_FIXED: libc::__u32= 1 << 3;
+pub const IORING_ASYNC_CANCEL_FD: libc::__u32 = 1 << 1;
+pub const IORING_ASYNC_CANCEL_ANY: libc::__u32 = 1 << 2;
+pub const IORING_ASYNC_CANCEL_FD_FIXED: libc::__u32 = 1 << 3;
 
 /// If set, instead of first attempting to send or receive and arm poll if that yields an
 /// -EAGAIN result, arm poll upfront and skip the initial transfer attempt.
@@ -280,7 +280,6 @@ pub const IORING_ACCEPT_MULTISHOT: libc::__u32 = 1 << 0;
 // IORING_OP_MSG_RING flags (sqe->msg_ring_flags)
 /// Don't post a CQE to the target ring. Not applicable for IORING_MSG_DATA, obviously.
 pub const IORING_MSG_RING_CQE_SKIP: libc::__u32 = 1 << 0;
-
 
 /// IO completion data structure (Completion Queue Entry)
 #[repr(C)]
@@ -422,10 +421,10 @@ pub enum IoUringRegisterOp {
     IORING_UNREGISTER_PBUF_RING = 23,
 
     /* sync cancellation API */
-    IORING_REGISTER_SYNC_CANCEL		= 24,
+    IORING_REGISTER_SYNC_CANCEL = 24,
 
     /* register a range of fixed file slots for automatic slot allocation */
-    IORING_REGISTER_FILE_ALLOC_RANGE	= 25,
+    IORING_REGISTER_FILE_ALLOC_RANGE = 25,
 
     /* this goes last */
     IORING_REGISTER_LAST,
