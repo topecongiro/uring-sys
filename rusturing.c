@@ -275,9 +275,21 @@ rust_io_uring_prep_multishot_accept_direct(struct io_uring_sqe* sqe,
 }
 
 extern inline void
-rust_io_uring_prep_cancel(struct io_uring_sqe* sqe, __u64 user_data, int flags)
+rust_io_uring_prep_cancel64(struct io_uring_sqe* sqe, __u64 user_data, int flags)
+{
+  io_uring_prep_cancel64(sqe, user_data, flags);
+}
+
+extern inline void
+rust_io_uring_prep_cancel(struct io_uring_sqe* sqe, void* user_data, int flags)
 {
   io_uring_prep_cancel(sqe, user_data, flags);
+}
+
+extern inline void
+rust_io_uring_prep_cancel_fd(struct io_uring_sqe* sqe, int fd, unsigned flags)
+{
+  io_uring_prep_cancel_fd(sqe, fd, flags);
 }
 
 extern inline void
@@ -410,6 +422,46 @@ rust_io_uring_prep_send(struct io_uring_sqe* sqe,
 }
 
 extern inline void
+rust_io_uring_prep_send_zc(struct io_uring_sqe* sqe,
+                           int sockfd,
+                           const void* buf,
+                           size_t len,
+                           int flags,
+                           unsigned zc_flags)
+{
+  io_uring_prep_send_zc(sqe, sockfd, buf, len, flags, zc_flags);
+}
+
+extern inline void
+rust_io_uring_prep_send_zc_fixed(struct io_uring_sqe* sqe,
+                                 int sockfd,
+                                 const void* buf,
+                                 size_t len,
+                                 int flags,
+                                 unsigned zc_flags,
+                                 unsigned buf_index)
+{
+  io_uring_prep_send_zc_fixed(sqe, sockfd, buf, len, flags, zc_flags, buf_index);
+}
+
+extern inline void
+rust_io_uring_prep_sendmsg_zc(struct io_uring_sqe* sqe,
+                              int fd,
+                              const struct msghdr* msg,
+                              unsigned flags)
+{
+  io_uring_prep_sendmsg_zc(sqe, fd, msg, flags);
+}
+
+extern inline void
+rust_io_uring_prep_send_set_addr(struct io_uring_sqe* sqe,
+                                 const struct sockaddr* dest_addr,
+                                 __u16 addr_len)
+{
+  io_uring_prep_send_set_addr(sqe, dest_addr, addr_len);
+}
+
+extern inline void
 rust_io_uring_prep_recv(struct io_uring_sqe* sqe,
                         int sockfd,
                         void* buf,
@@ -481,6 +533,45 @@ rust_io_uring_prep_unlinkat(struct io_uring_sqe* sqe,
 }
 
 extern inline void
+rust_io_uring_prep_unlink(struct io_uring_sqe* sqe,
+                          const char* path,
+                          int flags)
+{
+  io_uring_prep_unlink(sqe, path, flags);
+}
+
+extern inline void
+rust_io_uring_prep_socket(struct io_uring_sqe* sqe,
+                          int domain,
+                          int type,
+                          int protocol,
+                          unsigned flags)
+{
+  io_uring_prep_socket(sqe, domain, type, protocol, flags);
+}
+
+extern inline void
+rust_io_uring_prep_socket_direct(struct io_uring_sqe* sqe,
+                                 int domain,
+                                 int type,
+                                 int protocol,
+                                 unsigned file_index,
+                                 unsigned flags)
+{
+  io_uring_prep_socket_direct(sqe, domain, type, protocol, file_index, flags);
+}
+
+extern inline void
+rust_io_uring_prep_socket_direct_alloc(struct io_uring_sqe* sqe,
+                                       int domain,
+                                       int type,
+                                       int protocol,
+                                       unsigned flags)
+{
+  io_uring_prep_socket_direct_alloc(sqe, domain, type, protocol, flags);
+}
+
+extern inline void
 rust_io_uring_prep_renameat(struct io_uring_sqe* sqe,
                             int olddfd,
                             const char* oldpath,
@@ -489,6 +580,14 @@ rust_io_uring_prep_renameat(struct io_uring_sqe* sqe,
                             int flags)
 {
   io_uring_prep_renameat(sqe, olddfd, oldpath, newdfd, newpath, flags);
+}
+
+extern inline void
+rust_io_uring_prep_rename(struct io_uring_sqe* sqe,
+                          const char* oldpath,
+                          const char* newpath)
+{
+  io_uring_prep_rename(sqe, oldpath, newpath);
 }
 
 extern inline void
@@ -510,6 +609,14 @@ rust_io_uring_prep_mkdirat(struct io_uring_sqe* sqe,
   io_uring_prep_mkdirat(sqe, dfd, path, mode);
 }
 
+
+extern inline void
+rust_io_uring_prep_mkdir(struct io_uring_sqe* sqe,
+                         const char* path,
+                         mode_t mode)
+{
+  io_uring_prep_mkdir(sqe, path, mode);
+}
 extern inline void
 rust_io_uring_prep_symlinkat(struct io_uring_sqe* sqe,
                              const char* target,
@@ -517,6 +624,14 @@ rust_io_uring_prep_symlinkat(struct io_uring_sqe* sqe,
                              const char* linkpath)
 {
   io_uring_prep_symlinkat(sqe, target, newdirfd, linkpath);
+}
+
+extern inline void
+rust_io_uring_prep_symlink(struct io_uring_sqe* sqe,
+                           const char* target,
+                           const char* linkpath)
+{
+  io_uring_prep_symlink(sqe, target, linkpath);
 }
 
 extern inline void
@@ -528,6 +643,67 @@ rust_io_uring_prep_linkat(struct io_uring_sqe* sqe,
                           int flags)
 {
   io_uring_prep_linkat(sqe, olddfd, oldpath, newdfd, newpath, flags);
+}
+
+extern inline void
+rust_io_uring_prep_link(struct io_uring_sqe* sqe,
+                        const char* oldpath,
+                        const char* newpath,
+                        int flags)
+{
+  io_uring_prep_link(sqe, oldpath, newpath, flags);
+}
+
+extern inline void
+rust_io_uring_prep_msg_ring(struct io_uring_sqe* sqe,
+                            int fd,
+                            unsigned len,
+                            __u64 data,
+                            int flags)
+{
+  io_uring_prep_msg_ring(sqe, fd, len, data, flags);
+}
+
+extern inline void
+rust_io_uring_prep_getxattr(struct io_uring_sqe *sqe,
+                            const char *name,
+                            char *value,
+                            const char *path,
+                            unsigned int len)
+{
+  io_uring_prep_getxattr(sqe, name, value, path, len);
+}
+
+extern inline void
+rust_io_uring_prep_setxattr(struct io_uring_sqe *sqe,
+                            const char *name,
+                            const char *value,
+                            const char *path,
+                            int flags,
+                            unsigned int len)
+{
+  io_uring_prep_setxattr(sqe, name, value, path, flags, len);
+}
+
+extern inline void
+rust_io_uring_prep_fgetxattr(struct io_uring_sqe *sqe,
+                             int fd,
+                             const char *name,
+                             char *value,
+                             unsigned int len)
+{
+  io_uring_prep_fgetxattr(sqe, fd, name, value, len);
+}
+
+extern inline void
+rust_io_uring_prep_fsetxattr(struct io_uring_sqe *sqe,
+                             int fd,
+                             const char *name,
+                             const char *value,
+                             int flags,
+                             unsigned int len)
+{
+  io_uring_prep_fsetxattr(sqe, fd, name, value, flags, len);
 }
 
 extern inline unsigned
@@ -584,6 +760,41 @@ extern inline int
 rust_io_uring_wait_cqe(struct io_uring* ring, struct io_uring_cqe** cqe_ptr)
 {
   return io_uring_wait_cqe(ring, cqe_ptr);
+}
+
+extern inline int
+rust_io_uring_buf_ring_mask(__u32 ring_entries)
+{
+  return io_uring_buf_ring_mask(ring_entries);
+}
+
+extern inline void
+rust_io_uring_buf_ring_init(struct io_uring_buf_ring* br)
+{
+  io_uring_buf_ring_init(br);
+}
+
+extern inline void
+rust_io_uring_buf_ring_add(struct io_uring_buf_ring* br,
+                           void* addr,
+                           unsigned len,
+                           unsigned short bid,
+                           int mask,
+                           int buf_offset)
+{
+  io_uring_buf_ring_add(br, addr, len, bid, mask, buf_offset);
+}
+
+extern inline void
+rust_io_uring_buf_ring_advance(struct io_uring_buf_ring* br, int count)
+{
+  io_uring_buf_ring_advance(br, count);
+}
+
+extern inline void
+rust_io_uring_buf_ring_cq_advance(struct io_uring* ring, struct io_uring_buf_ring* br, int count)
+{
+  io_uring_buf_ring_cq_advance(ring, br, count);
 }
 
 extern inline struct io_uring_sqe*
