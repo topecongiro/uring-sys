@@ -255,6 +255,10 @@ extern "C" {
 
     pub fn io_uring_mlock_size(entries: libc::c_uint, flags: libc::c_uint);
     pub fn io_uring_mlock_size_params(entries: libc::c_uint, p: *mut io_uring_params);
+
+    pub fn io_uring_major_version() -> libc::c_int;
+    pub fn io_uring_minor_version() -> libc::c_int;
+    pub fn io_uring_check_version(major: libc::c_int, minor: libc::c_int) -> bool;
 }
 
 #[link(name = "rusturing")]

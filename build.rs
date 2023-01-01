@@ -22,6 +22,7 @@ fn main() {
         .file(src.join("queue.c"))
         .file(src.join("syscall.c"))
         .file(src.join("register.c"))
+        .file(src.join("version.c"))
         .define("_DEFAULT_SOURCE", "")
         .include(src.join("include"))
         .include(&configured_include)
@@ -41,10 +42,15 @@ fn configure(liburing: &Path) -> PathBuf {
         .canonicalize()
         .unwrap();
     fs::copy(liburing.join("configure"), out_dir.join("configure")).unwrap();
+    fs::copy(liburing.join("Makefile.common"), out_dir.join("Makefile.common")).unwrap();
+    fs::copy(liburing.join("liburing.spec"), out_dir.join("liburing.spec")).unwrap();
     fs::create_dir_all(out_dir.join("src/include/liburing")).unwrap();
-    Command::new("./configure")
+    let ret = Command::new("./configure")
         .current_dir(&out_dir)
         .output()
         .expect("configure script failed");
+    if !ret.status.success() {
+        panic!("configure failed: {}", String::from_utf8(ret.stderr).unwrap_or_default());
+    }
     out_dir.join("src/include")
 }
