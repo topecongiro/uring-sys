@@ -35,7 +35,7 @@ unsafe fn test_reg_unreg(bgid: i32) -> TestResult {
         ring_addr: ptr as usize as u64,
         ring_entries: 32,
         bgid: bgid as u16,
-        pad: 0,
+        flags: 0,
         resv: [0; 3],
     };
     let ret = io_uring_register_buf_ring(&mut ring, &mut reg, 0);

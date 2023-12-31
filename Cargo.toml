@@ -10,7 +10,11 @@ edition = "2018"
 links = "uring"
 
 [dependencies]
-libc = "0.2.65"
+libc = "0.2.151"
 
 [build-dependencies]
-cc = "1.0.47"
+bindgen = { version = "0.69.1", features = ["experimental"] }
+cc = "1.0.83"
+
+[dev-dependencies]
+tempfile = "3.9.0"
