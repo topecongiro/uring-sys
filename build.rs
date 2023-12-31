@@ -15,7 +15,9 @@ fn main() {
     let configured_include = configure(&liburing);
 
     let src = liburing.join("src");
-    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).canonicalize().unwrap();
+    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap())
+        .canonicalize()
+        .unwrap();
 
     // liburing
     Build::new()
@@ -59,9 +61,21 @@ fn configure(liburing: &Path) -> PathBuf {
         .unwrap();
     fs::create_dir_all(out_dir.join("src/include/liburing")).unwrap();
     fs::copy(liburing.join("configure"), out_dir.join("configure")).unwrap();
-    fs::copy(liburing.join("src/include/liburing.h"), out_dir.join("src/include/liburing.h")).unwrap();
-    fs::copy(liburing.join("src/include/liburing/barrier.h"), out_dir.join("src/include/liburing/barrier.h")).unwrap();
-    fs::copy(liburing.join("src/include/liburing/io_uring.h"), out_dir.join("src/include/liburing/io_uring.h")).unwrap();
+    fs::copy(
+        liburing.join("src/include/liburing.h"),
+        out_dir.join("src/include/liburing.h"),
+    )
+    .unwrap();
+    fs::copy(
+        liburing.join("src/include/liburing/barrier.h"),
+        out_dir.join("src/include/liburing/barrier.h"),
+    )
+    .unwrap();
+    fs::copy(
+        liburing.join("src/include/liburing/io_uring.h"),
+        out_dir.join("src/include/liburing/io_uring.h"),
+    )
+    .unwrap();
     fs::copy(
         liburing.join("Makefile.common"),
         out_dir.join("Makefile.common"),
