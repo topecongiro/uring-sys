@@ -15,6 +15,7 @@ fn main() {
     let configured_include = configure(&liburing);
 
     let src = liburing.join("src");
+    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
 
     // liburing
     Build::new()
@@ -29,12 +30,27 @@ fn main() {
         .extra_warnings(false)
         .compile("uring");
 
+    let bindings = bindgen::Builder::default()
+        .header(src.join("include").join("liburing.h").to_str().unwrap())
+        .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
+        .allowlist_file("^(.*liburing.h)$")
+        .allowlist_file("^(.*io_uring.h)$")
+        .wrap_static_fns(true)
+        .wrap_static_fns_path(out_dir.join("rusturing.c"))
+        .rustified_enum("io_uring_op") // Not used in C code; safe to rustify
+        .rustified_non_exhaustive_enum("io_uring_op")
+        .generate()
+        .unwrap();
+
     // (our additional, linkable C bindings)
     Build::new()
-        .file(project.join("rusturing.c"))
+        .file(out_dir.join("rusturing.c"))
         .include(src.join("include"))
         .include(&configured_include)
         .compile("rusturing");
+
+    let out_path = out_dir.join("bindings.rs");
+    bindings.write_to_file(out_path).unwrap();
 }
 
 fn configure(liburing: &Path) -> PathBuf {
