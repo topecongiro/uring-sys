@@ -30,7 +30,7 @@ fn main() {
         .compile("uring");
 
     let bindings = bindgen::Builder::default()
-        .header(src.join("include").join("liburing.h").to_str().unwrap())
+        .header(configured_include.join("liburing.h").to_str().unwrap())
         .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
         .allowlist_file("^(.*liburing.h)$")
         .allowlist_file("^(.*io_uring.h)$")
