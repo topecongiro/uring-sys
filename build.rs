@@ -15,7 +15,7 @@ fn main() {
     let configured_include = configure(&liburing);
 
     let src = liburing.join("src");
-    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
+    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).canonicalize().unwrap();
 
     // liburing
     Build::new()
