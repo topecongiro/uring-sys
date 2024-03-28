@@ -17,7 +17,7 @@ mod test {
     #[test]
     fn check_version() {
         unsafe {
-            assert!(io_uring_check_version(2, 5));
+            assert!(io_uring_check_version(2, 8));
         }
     }
 
