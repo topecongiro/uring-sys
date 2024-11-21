@@ -77,6 +77,11 @@ fn configure(liburing: &Path) -> PathBuf {
     )
     .unwrap();
     fs::copy(
+        liburing.join("src/include/liburing/sanitize.h"),
+        out_dir.join("src/include/liburing/sanitize.h"),
+    )
+    .unwrap();
+    fs::copy(
         liburing.join("Makefile.common"),
         out_dir.join("Makefile.common"),
     )
