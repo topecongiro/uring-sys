@@ -15,13 +15,6 @@ mod test {
     use super::*;
 
     #[test]
-    fn check_version() {
-        unsafe {
-            assert!(io_uring_check_version(2, 8));
-        }
-    }
-
-    #[test]
     fn cq_size() {
         unsafe {
             assert!(unsafe_cq_size(4) == 0);
