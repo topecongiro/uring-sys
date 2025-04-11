@@ -38,8 +38,7 @@ fn main() {
         .allowlist_file("^(.*io_uring.h)$")
         .wrap_static_fns(true)
         .wrap_static_fns_path(out_dir.join("rusturing.c"))
-        .rustified_enum("io_uring_op") // Not used in C code; safe to rustify
-        .rustified_non_exhaustive_enum("io_uring_op")
+        .prepend_enum_name(false)
         .generate()
         .unwrap();
 
